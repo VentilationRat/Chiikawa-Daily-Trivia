@@ -197,3 +197,135 @@ h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
   .btn:active { transform: none; }
   .bar { transition: none; }
 }
+/* Background music controls, pinned to the bottom-left inside the pink frame. */
+.music-player {
+  position: fixed;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.4rem;
+  background: var(--paper);
+  border: var(--line);
+  border-radius: 999px;
+  box-shadow: 3px 4px 0 var(--ink);
+}
+
+.music-btn {
+  width: 2.4rem;
+  height: 2.4rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--pink);
+  border: var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.music-btn:active { transform: translateY(2px); }
+.music-btn:focus-visible, .music-volume:focus-visible {
+  outline: 3px dashed var(--ink);
+  outline-offset: 3px;
+}
+
+.music-volume {
+  width: 6rem;
+  accent-color: #e58fa5;
+  cursor: pointer;
+}
+
+/* Tap-to-enter screen, shown only when the browser blocks music autoplay. */
+.enter-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(60, 79, 158, 0.55);
+  backdrop-filter: blur(6px);
+}
+.enter-screen[hidden] { display: none; }
+
+.enter-card {
+  font: inherit;
+  color: #4a3b35;
+  background: #fffdf9;
+  border: 3px solid #4a3b35;
+  border-radius: var(--radius);
+  box-shadow: 5px 6px 0 #4a3b35;
+  padding: 1.5rem 2rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.enter-card:active { transform: translateY(2px); }
+.enter-card:focus-visible { outline: 3px dashed #fffdf9; outline-offset: 4px; }
+.enter-card img { width: 7rem; height: auto; }
+.enter-title { font-size: 1.5rem; font-weight: 900; }
+.enter-hint { color: #8a7a72; font-weight: 700; animation: enter-pulse 1.6s ease-in-out infinite; }
+
+@keyframes enter-pulse { 50% { opacity: 0.45; } }
+@media (prefers-reduced-motion: reduce) { .enter-hint { animation: none; } }
+
+/* Crucify button, centred on the point x:600, y:720 of the window. */
+.crucify-btn {
+  position: fixed;
+  left: 600px;
+  top: 720px;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  z-index: 11;
+  background: var(--miss);
+  box-shadow: 3px 4px 0 var(--ink);
+}
+.crucify-btn:active { transform: translate(-50%, calc(-50% + 2px)); }
+.crucify-btn:disabled { cursor: default; opacity: 0.6; }
+
+/* Full-window overlay: Momonga in the centre, fire gif across the bottom half. */
+.crucify-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.6);
+}
+.crucify-overlay[hidden] { display: none; }
+
+/* Wraps the image so the credit can sit on its top-left corner. */
+.crucify-frame { position: relative; }
+
+.crucify-credit {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  font-weight: 700;
+  color: #fffdf9;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 999px;
+}
+
+.crucify-momonga {
+  display: block;
+  width: min(95vw, 90vh);
+  height: auto;
+  border: 3px solid #4a3b35;
+  border-radius: var(--radius);
+}
+
+.crucify-fire {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 50vh;
+  object-fit: cover;
+}

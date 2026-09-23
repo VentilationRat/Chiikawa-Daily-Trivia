@@ -48,6 +48,31 @@
     </section>
   </main>
 
+  <div id="enter-screen" class="enter-screen" hidden>
+    <button id="enter-btn" class="enter-card">
+      <img src="Images/ChiikawaModerDesign.webp" alt="" width="383" height="396">
+      <span class="enter-title">Daily Chiikawa Trivia</span>
+      <span class="enter-hint">Tap to enter ♪</span>
+    </button>
+  </div>
+
+  <button id="crucify-btn" class="btn crucify-btn">crucify</button>
+
+  <div id="crucify-overlay" class="crucify-overlay" hidden>
+    <div class="crucify-frame">
+      <img class="crucify-momonga" src="Images/momonga.jpg" alt="Momonga">
+      <span class="crucify-credit">@fluffysaimai_II</span>
+    </div>
+    <img id="crucify-fire" class="crucify-fire" alt="">
+    <audio id="crucify-sound" src="sound/momongaburning.mp3" preload="auto"></audio>
+  </div>
+
+  <div class="music-player">
+    <audio id="bg-music" src="song/パジャマパーティーズのうた.mp3" loop preload="auto"></audio>
+    <button id="music-toggle" class="music-btn" aria-label="Play music">▶</button>
+    <input id="music-volume" class="music-volume" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Music volume">
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="questions.js"></script>
   <script src="app.js"></script>

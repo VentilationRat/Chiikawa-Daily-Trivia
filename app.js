@@ -258,3 +258,75 @@ $("share-btn").addEventListener("click", share);
   await submitScore(saved); // retries if the first save failed
   loadStats(saved);
 })();
+// Background music: loops the song, with a play/pause toggle and volume slider.
+(function setupMusic() {
+  const audio = document.getElementById("bg-music");
+  const toggle = document.getElementById("music-toggle");
+  const volume = document.getElementById("music-volume");
+
+  audio.volume = Number(volume.value);
+
+  function render() {
+    toggle.textContent = audio.paused ? "▶" : "❚❚";
+    toggle.setAttribute("aria-label", audio.paused ? "Play music" : "Pause music");
+  }
+
+  toggle.addEventListener("click", () => {
+    if (audio.paused) audio.play().catch(() => {});
+    else audio.pause();
+  });
+
+  volume.addEventListener("input", () => {
+    audio.volume = Number(volume.value);
+  });
+
+  audio.addEventListener("play", render);
+  audio.addEventListener("pause", render);
+
+  // Browsers block sound until the visitor interacts. If autoplay is refused,
+  // show a tap-to-enter screen so the song starts with that first tap.
+  const enterScreen = document.getElementById("enter-screen");
+  const enterBtn = document.getElementById("enter-btn");
+
+  enterBtn.addEventListener("click", () => {
+    enterScreen.hidden = true;
+    audio.play().catch(() => {});
+  });
+
+  audio.play().catch(() => {
+    enterScreen.hidden = false;
+    enterBtn.focus();
+  });
+  render();
+})();
+
+// Crucify button: shows Momonga over a fire gif with the burning sound for 6 seconds,
+// pausing the background song and resuming it afterwards if it was playing.
+(function setupCrucify() {
+  const DURATION_MS = 6000;
+  const FIRE_GIF = "gif/cfc92674208b20a4a3ce01defecccd32.gif";
+  const button = document.getElementById("crucify-btn");
+  const overlay = document.getElementById("crucify-overlay");
+  const fire = document.getElementById("crucify-fire");
+  const sound = document.getElementById("crucify-sound");
+  const music = document.getElementById("bg-music");
+
+  button.addEventListener("click", () => {
+    const musicWasPlaying = !music.paused;
+    music.pause();
+
+    button.disabled = true;
+    fire.src = `${FIRE_GIF}?t=${Date.now()}`; // fresh URL restarts the gif from its first frame
+    overlay.hidden = false;
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+
+    setTimeout(() => {
+      sound.pause();
+      overlay.hidden = true;
+      fire.removeAttribute("src");
+      button.disabled = false;
+      if (musicWasPlaying) music.play().catch(() => {});
+    }, DURATION_MS);
+  });
+})();
