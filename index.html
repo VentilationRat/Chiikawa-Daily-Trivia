@@ -12,17 +12,22 @@
 <body>
   <main class="page">
     <header class="masthead">
+      <img class="logo" src="Images/ChiikawaModerDesign.webp" alt="Chiikawa" width="383" height="396">
       <h1>Daily Chiikawa Trivia</h1>
       <p id="day-label" class="muted"></p>
     </header>
 
     <section id="start-screen" class="panel">
-      <p>Five questions, one try per day. The fastest high score tops the board.</p>
+      <p>Five questions, 30 seconds each, one try per day. See how you stack up against everyone who played today.</p>
       <button id="start-btn" class="btn primary">Start today's quiz</button>
     </section>
 
     <section id="quiz-screen" class="panel" hidden>
-      <p id="progress" class="muted"></p>
+      <div class="quiz-top">
+        <p id="progress" class="muted"></p>
+        <p id="timer-text" class="timer-text"></p>
+      </div>
+      <div class="timer-bar" aria-hidden="true"><div id="timer-fill" class="timer-fill"></div></div>
       <h2 id="question-text"></h2>
       <div id="choices" class="choices"></div>
       <button id="next-btn" class="btn primary" hidden>Next question</button>
@@ -33,20 +38,13 @@
       <p id="result-grid" class="grid" aria-label="Your answers"></p>
       <p id="result-time" class="muted"></p>
       <button id="share-btn" class="btn">Copy result</button>
-
-      <form id="score-form" class="score-form">
-        <label for="name-input">Name for the leaderboard</label>
-        <div class="row">
-          <input id="name-input" maxlength="20" autocomplete="nickname" required>
-          <button class="btn primary" type="submit">Add my score</button>
-        </div>
-      </form>
-      <p id="submit-status" class="muted" role="status"></p>
     </section>
 
-    <section class="panel board">
-      <h3>Today's leaderboard</h3>
-      <ol id="leaderboard-list"></ol>
+    <section id="stats-panel" class="panel" hidden>
+      <h3>How you compare today</h3>
+      <p id="percentile" class="percentile">Loading today's results...</p>
+      <div id="chart" class="chart" role="img"></div>
+      <p id="stats-note" class="muted"></p>
     </section>
   </main>
 

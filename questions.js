@@ -1,35 +1,264 @@
 // Your question bank. `answer` is the index (0-based) of the correct choice.
-// Each day picks 5 of these, so add as many as you can: 50+ keeps days from repeating too often.
-// Double-check every fact before you launch.
+// Each day picks 5 of these at random (the same 5 for everyone).
 const QUESTIONS = [
-  {
-    q: "Who created Chiikawa?",
-    choices: ["Nagano", "Sanrio", "Eiichiro Oda", "Kanahei"],
-    answer: 0
-  },
-  {
-    q: "Where was Chiikawa first published?",
-    choices: ["A weekly manga magazine", "Twitter (now X)", "A children's picture book", "A mobile game"],
-    answer: 1
-  },
-  {
-    q: "The name \"Chiikawa\" is short for a phrase meaning...",
-    choices: ["Tiny warrior", "Something small and cute", "Little river", "Cheerful friend"],
-    answer: 1
-  },
-  {
-    q: "Which character is a cat with a split two-tone head?",
-    choices: ["Usagi", "Momonga", "Hachiware", "Kurimanju"],
-    answer: 2
-  },
-  {
-    q: "Which character is famous for yelling \"Ura!\" and \"Yaha!\"?",
-    choices: ["Chiikawa", "Hachiware", "Shisa", "Usagi"],
-    answer: 3
-  },
-  {
-    q: "What kind of animal is Momonga?",
-    choices: ["A flying squirrel", "A hamster", "A bat", "A rabbit"],
-    answer: 0
-  }
+  // ===== Hachiware =====
+  { q: "Which instrument does Hachiware play and sing along with?", choices: ["Piano", "Ukulele", "Guitar", "Harmonica"], answer: 2 },
+  { q: "What did Hachiware save up money for a long time to buy?", choices: ["A guitar", "A camera", "A house", "A bicycle"], answer: 1 },
+  { q: "Why does Hachiware live in a cave?", choices: ["They like the cool air", "They can't afford a house", "Their house was destroyed", "Rakko told them to"], answer: 1 },
+  { q: "How does Hachiware mispronounce \"Charumera\" instant ramen?", choices: ["Charimera", "Chamurera", "Charumara", "Chirumera"], answer: 0 },
+  { q: "Hachiware misreads the candy store \"Okashi no Machioka\" as...", choices: ["Snack Castle", "Candy Town, Oka", "Sweets Street", "Machi's Candy"], answer: 1 },
+  { q: "Who trains Hachiware to get stronger?", choices: ["Usagi", "Labor Yoroi-san", "Rakko", "Kuri-Manju"], answer: 2 },
+  { q: "What color is Hachiware's sasumata?", choices: ["Pink", "Yellow", "Blue", "Green"], answer: 2 },
+  { q: "Just like a cat, Hachiware sometimes coughs up...", choices: ["Hairballs", "Fish bones", "Bubbles", "Pebbles"], answer: 0 },
+  { q: "What did Hachiware ask a shooting star to heal?", choices: ["A sore paw", "A hangnail", "A broken camera", "A cold"], answer: 1 },
+  { q: "Who performs the anime's ending theme song?", choices: ["Usagi's voice actor", "The Pajama Parties", "Hachiware's voice actor", "Nagano"], answer: 2 },
+  { q: "Which member of the main trio speaks in full, standard Japanese?", choices: ["Chiikawa", "Usagi", "Hachiware", "None of them"], answer: 2 },
+  { q: "Hachiware's official birthday, May 1, is the date they...", choices: ["Got their weeding license", "First appeared in the manga", "Bought their camera", "Met Usagi"], answer: 1 },
+  { q: "Hachiware is officially \"not necessarily a cat.\" What does that let them eat?", choices: ["Onions and chocolate", "Raw fish", "Catnip", "Grass"], answer: 0 },
+  { q: "What made Hachiware and Chiikawa run away laughing and crying after Hachiware kept shouting its name?", choices: ["A goblin", "A sphinx", "A sunfish", "A dragon"], answer: 1 },
+
+  // ===== Chiikawa =====
+  { q: "What color is Chiikawa's sasumata?", choices: ["Blue", "Pink", "White", "Yellow"], answer: 1 },
+  { q: "What shape is Chiikawa's pink pochette?", choices: ["A bunny", "A strawberry", "A bear", "A heart"], answer: 2 },
+  { q: "Chiikawa can't speak in full sentences, but they can...", choices: ["Write full sentences", "Speak English", "Use sign language", "Sing full songs"], answer: 0 },
+  { q: "What list did Hachiware find that Chiikawa had written?", choices: ["A grocery list", "A \"Things I want to do\" list", "A list of scary monsters", "A weeding checklist"], answer: 1 },
+  { q: "How did Chiikawa get their house?", choices: ["Won it in a Muchauma yogurt contest", "Built it with Hachiware", "Bought it with weeding money", "It was a gift from Pochette Yoroi-san"], answer: 0 },
+  { q: "Which vegetable does Chiikawa try to avoid eating?", choices: ["Carrots", "Broccoli", "Onions", "Peppers"], answer: 1 },
+  { q: "Which kind of food can Chiikawa NOT handle, unlike Hachiware and Usagi?", choices: ["Sour food", "Sweet food", "Spicy food", "Cold food"], answer: 2 },
+  { q: "How many times did Chiikawa fail the weeding license exam before passing?", choices: ["Never", "Once", "Twice", "Five times"], answer: 2 },
+  { q: "What stops Chiikawa from singing confidently in front of others?", choices: ["A sore throat", "Stage fright", "Usagi's teasing", "Not knowing the words"], answer: 1 },
+  { q: "Which sound does Chiikawa say out loud while eating?", choices: ["\"Mogu\"", "\"Ura\"", "\"Yaha\"", "\"Nyan\""], answer: 0 },
+  { q: "What is Chiikawa's big passion?", choices: ["Photography", "Dancing", "Driving", "Collecting rocks"], answer: 1 },
+
+  // ===== Usagi =====
+  { q: "What does Usagi's weapon do?", choices: ["Shoots fireworks out of both ends", "Turns into a net", "Freezes monsters", "Plays music"], answer: 0 },
+  { q: "What level weeding license does Usagi have?", choices: ["Level 5", "Level 4", "Level 2", "They don't have one"], answer: 2 },
+  { q: "What does Usagi secretly collect?", choices: ["Bottle caps", "Rocks", "Stickers", "Spoons"], answer: 1 },
+  { q: "Which trio member's home has never been revealed?", choices: ["Chiikawa", "Hachiware", "Usagi", "All three live together"], answer: 2 },
+  { q: "Besides Usagi, which character can sleep with their eyes open?", choices: ["Chiikawa", "Ode", "Rakko", "Momonga"], answer: 1 },
+  { q: "Usagi first appeared on Nagano's Twitter in which year, before the Chiikawa manga began?", choices: ["2017", "2019", "2021", "2022"], answer: 1 },
+  { q: "In fights, Usagi shows a surprising talent for...", choices: ["Throwing objects accurately", "Flying", "Talking to monsters", "Hiding"], answer: 0 },
+  { q: "What color is Usagi?", choices: ["White", "Pink", "Yellow", "Blue"], answer: 2 },
+  { q: "How did Usagi dig an escape tunnel out of the goblins' jail?", choices: ["With their weapon", "With a fork", "With their paws", "With a spoon from Ode"], answer: 1 },
+  { q: "How did the trio escape the witch who wanted their bodies?", choices: ["Rakko rescued them", "Usagi added a poison mushroom to her dinner", "Chiikawa broke her wand", "They tricked her with a mirror"], answer: 1 },
+  { q: "In the Body Swap arc, how did the trio get their own bodies back?", choices: ["Usagi hit the jackpot on the slot machine", "A witch reversed it", "They slept it off", "Momonga fixed the machine"], answer: 0 },
+
+  // ===== Kuri-Manju =====
+  { q: "Unlike Chiikawa and Hachiware, what kind of bath does Kuri-Manju enjoy?", choices: ["Hot springs", "Mud baths", "Cold baths", "Bubble baths"], answer: 2 },
+  { q: "What does Kuri-Manju always do after a sip of their drink?", choices: ["Hiccup", "Let out a very loud sigh", "Dance", "Fall asleep"], answer: 1 },
+  { q: "How does Kuri-Manju look when hungover in the morning?", choices: ["Green in the face", "Blue in the face", "Red in the face", "Completely white"], answer: 1 },
+  { q: "What did Kuri-Manju leave Shisa after catching them asleep while studying?", choices: ["A blanket", "A dry sausage", "A note", "A bottle of sake"], answer: 1 },
+  { q: "Kuri-Manju is inspired by a chestnut bun and which animal?", choices: ["Raccoon", "Honey badger", "Otter", "Hedgehog"], answer: 1 },
+
+  // ===== Rakko =====
+  { q: "Rakko is the #1 ranked hunter, but is terrible at...", choices: ["Cooking", "Online fighting games", "Swimming", "Driving"], answer: 1 },
+  { q: "Where is Rakko's cross-shaped scar?", choices: ["On their cheek", "Above their right eye", "On their paw", "On their back"], answer: 1 },
+  { q: "What weapon does Rakko carry on their back?", choices: ["A bow", "A spear", "A greatsword", "A hammer"], answer: 2 },
+  { q: "What did Rakko make a vow to become stronger in front of?", choices: ["A memorial park statue", "The job booth", "A shooting star", "Their master's grave"], answer: 0 },
+  { q: "What made Rakko ecstatic enough to go tell the statue about it?", choices: ["Winning a tournament", "Chiikawa and Hachiware calling them \"sensei\"", "Getting a new car", "Beating a giant monster"], answer: 1 },
+  { q: "Rakko owns a car and uses it to...", choices: ["Race Usagi", "Give Chiikawa and Hachiware rides", "Deliver ramen", "Chase Momonga"], answer: 1 },
+  { q: "Serious as Rakko seems, they have a...", choices: ["Fear of bugs", "Sweet tooth", "Plushie collection", "Karaoke habit"], answer: 1 },
+
+  // ===== Shisa =====
+  { q: "What is Shisa's dream?", choices: ["To open their own ramen shop", "To have a drink with Ramen Yoroi-san", "To become the #1 hunter", "To visit Okinawa"], answer: 1 },
+  { q: "What kind of creature is Shisa?", choices: ["A lion-dog", "A tiger", "A dragon", "A fox"], answer: 0 },
+  { q: "Shisa often introduces Chiikawa and friends to delicacies from where?", choices: ["Hokkaido", "Kyoto", "Okinawa", "Osaka"], answer: 2 },
+  { q: "Shisa grew closer to Chiikawa and Hachiware after they...", choices: ["Helped Shisa study", "Took care of Shisa when they had a bad fever", "Saved Shisa from a monster", "Ate at Rou every day"], answer: 1 },
+  { q: "Which rare license lets Shisa work as a server at Rou?", choices: ["Drinking license", "Super Part-timer license", "Level 1 weeding license", "Chef license"], answer: 1 },
+  { q: "Who does Shisa go to for help with alcohol-related topics?", choices: ["Rakko", "Kuri-Manju", "Momonga", "Labor Yoroi-san"], answer: 1 },
+
+  // ===== Momonga =====
+  { q: "What did Momonga destroy at the abandoned game center \"just in case\"?", choices: ["A claw machine", "A body swap slot machine", "A photo booth", "A vending machine"], answer: 1 },
+  { q: "What did Dekatsuyo keep yelling while chasing Momonga?", choices: ["\"Come back!\"", "\"Give it back!\"", "\"You thief!\"", "\"I'll eat you!\""], answer: 1 },
+  { q: "Who is Momonga's close friend and defender?", choices: ["Usagi", "Furuhonya (Kani)", "Rakko", "Shisa"], answer: 1 },
+  { q: "Why did Ramen Yoroi-san toss Momonga out of Rou?", choices: ["For stealing noodles", "For ignoring the ordering process", "For being too loud", "For not paying"], answer: 1 },
+  { q: "Whose yawning and crying does Momonga copy to seem cute?", choices: ["Usagi's", "Hachiware's", "Chiikawa's", "Shisa's"], answer: 2 },
+  { q: "What color is Momonga's fluffy tail?", choices: ["Brown", "Pink", "Blue", "White"], answer: 2 },
+  { q: "Who does Momonga frequently bother until they get yelled at?", choices: ["Labor Yoroi-san", "Rakko", "Ode", "Kuri-Manju"], answer: 0 },
+
+  // ===== Furuhonya / Kani =====
+  { q: "Furuhonya's crab pincers are actually...", choices: ["Real claws", "Part of a headband", "Gloves", "Ears"], answer: 1 },
+  { q: "What did Furuhonya sell Hachiware in their very first appearance?", choices: ["A weeding book", "A camera", "A cookbook", "A map"], answer: 0 },
+  { q: "What do fans usually call Furuhonya?", choices: ["Pinky", "Kani", "Hon-chan", "Mob"], answer: 1 },
+  { q: "What does Furuhonya like to do when not running their shop?", choices: ["Dance", "Read books", "Fish", "Cook"], answer: 1 },
+
+  // ===== Dekatsuyo & Anoko =====
+  { q: "Dekatsuyo's name comes from Japanese words meaning...", choices: ["Big and strong", "Scary and fast", "Sad and lonely", "Tall and hungry"], answer: 0 },
+  { q: "What does Dekatsuyo refuse to do, unlike other chimeras?", choices: ["Sleep", "Eat chiikawas", "Talk", "Leave the forest"], answer: 1 },
+  { q: "What was Dekatsuyo's dream about?", choices: ["Becoming the strongest monster", "Being back in a chiikawa body like Momonga's", "Eating Chiikawa", "Finding the witch"], answer: 1 },
+  { q: "What did Anoko point at to try to make Chiikawa remember them?", choices: ["A lemon", "A frog", "A snack", "A pajama"], answer: 1 },
+  { q: "Where did Anoko likely work with Chiikawa before becoming a chimera?", choices: ["A ramen shop", "A lemon-labeling factory", "A bookstore", "A cookie bakery"], answer: 1 },
+  { q: "What does Anoko's tail look like?", choices: ["A fluffy white tail", "A green lizard-like tail", "A fish tail", "A tiny round tail"], answer: 1 },
+  { q: "It's theorized that chiikawas turn into chimeras because of...", choices: ["Eating bad mushrooms", "Extreme stress", "Staying up late", "Getting wet"], answer: 1 },
+
+  // ===== Chiikabu =====
+  { q: "According to Hachiware, what does Chiikabu's squishy body smell like?", choices: ["Strawberries", "A sweet omelette", "Fresh bread", "Flowers"], answer: 1 },
+  { q: "What was Chiikabu really?", choices: ["A mimic monster", "A lost yoroi", "Usagi's pet", "A shooting star"], answer: 0 },
+  { q: "Who saved the trio when Chiikabu revealed its true form?", choices: ["Rakko", "Pochette Yoroi-san", "Usagi alone", "Ode"], answer: 1 },
+  { q: "What kind of bug does Chiikabu look like?", choices: ["A ladybug", "A rhinoceros beetle", "A butterfly", "A bee"], answer: 1 },
+
+  // ===== Yoroi-san =====
+  { q: "What did the trio gift Pochette Yoroi-san, thinking it was a fashionable accessory?", choices: ["A seashell", "A bear claw", "A crown", "A feather"], answer: 1 },
+  { q: "Pochette Yoroi-san saved Chiikawa from what?", choices: ["A terrible self-haircut", "A flood", "A mimic", "Getting lost"], answer: 0 },
+  { q: "Which of these does Pochette Yoroi-san sell?", choices: ["Pajamas, pochettes, and raincoats", "Books", "Takoyaki", "Ramen"], answer: 0 },
+  { q: "Why was Pochette Yoroi-san gently scolded by the head yoroi?", choices: ["For being late", "For getting too close to the chiikawas", "For selling fake items", "For losing his armor"], answer: 1 },
+  { q: "What does Labor Yoroi-san use to announce new jobs?", choices: ["A whistle", "A bell", "A drum", "A megaphone"], answer: 1 },
+  { q: "What color is Ramen Yoroi-san's armor?", choices: ["Silver", "Red", "Gold", "Black"], answer: 2 },
+  { q: "What does Yatai no Yoroi-san sell at his food stall?", choices: ["Takoyaki and shaved ice", "Ramen", "Crepes", "Sushi"], answer: 0 },
+  { q: "Who secretly plays Muchauman, the probiotic drink mascot?", choices: ["Usagi", "The yoroi-san, in shifts", "Rakko", "Kuri-Manju"], answer: 1 },
+  { q: "What is Rou ramen shop famous for?", choices: ["Being open 24 hours", "Its complicated ordering process", "Free refills", "Its giant bowls"], answer: 1 },
+
+  // ===== Licenses =====
+  { q: "Weeding licenses go from level 5 to level 1. Which level is the highest?", choices: ["Level 5", "Level 3", "Level 1", "They're all equal"], answer: 2 },
+  { q: "What happens if a yoroi catches you drinking without your license?", choices: ["You pay a fine", "You get a \"no alcohol\" stamp", "You go to jail", "You lose your house"], answer: 1 },
+  { q: "Which collab character has a level 1 weeding license?", choices: ["Hello Kitty", "Pompompurin", "Pikachu", "Kuromi"], answer: 1 },
+  { q: "Kuri-Manju once lost their drinking license temporarily because...", choices: ["They failed a retest", "They drank without it on them", "Momonga stole it", "It expired"], answer: 1 },
+
+  // ===== The Chiikawa world =====
+  { q: "Where do fish sausages grow in the Chiikawa world?", choices: ["In the ocean", "In a fish sausage grove", "Underground", "At the market"], answer: 1 },
+  { q: "The flying sunfish works like a free taxi, but...", choices: ["It only flies at night", "It flies around aimlessly", "It bites", "It only carries one passenger"], answer: 1 },
+  { q: "In what language did the stars thank Chiikawa and Hachiware?", choices: ["Japanese", "English", "French", "They only beeped"], answer: 1 },
+  { q: "What did the three stars make for Chiikawa and Hachiware as thanks?", choices: ["A giant omurice", "A cake", "A house", "A treasure chest"], answer: 0 },
+  { q: "What did Chiikawa wish for that let the black star trap them in a time loop?", choices: ["To be stronger", "For the day to never end", "To pass the exam", "For endless snacks"], answer: 1 },
+  { q: "How did Chiikawa finally get rid of the black star?", choices: ["Smashed the clock", "Washed the clock with OxiClean", "Made another wish", "Asked Rakko to fight it"], answer: 1 },
+  { q: "In the Magic Wand arc, how did Chiikawa save Hachiware and Usagi from turning into chimeras?", choices: ["Broke the wand in half", "Threw it in a lake", "Gave it to a yoroi", "Made a wish with it"], answer: 0 },
+  { q: "In the fairy arc, how did the trio get their bodies back?", choices: ["A yoroi accidentally crushed the wooden doll", "They dropped the doll from a height", "Usagi ate the doll", "A star granted a wish"], answer: 0 },
+  { q: "How did Chiikawa defeat the crystal snake?", choices: ["With spicy curry", "By reflecting its beam with a mirror", "With their sasumata", "By singing"], answer: 1 },
+  { q: "What did Hachiware use to break the teeth of the monster that grabbed Chiikawa at night?", choices: ["A blue ribbon", "Their guitar", "A rock", "Their camera"], answer: 0 },
+  { q: "In the Ribbon arc, what stole Hachiware's treasured blue ribbon?", choices: ["Momonga", "A white bird", "Usagi", "The wind"], answer: 1 },
+  { q: "Why do the goblins lock up intruders?", choices: ["For taking their gold", "For eating their mushrooms", "For entering their cave", "For being too loud"], answer: 1 },
+  { q: "How many eyes does Ode have?", choices: ["One", "Two", "Three", "None"], answer: 0 },
+  { q: "The fan name \"Ode\" comes from a mispronunciation of which word?", choices: ["\"Ore\" (me)", "\"Oden\"", "\"Oide\" (come here)", "\"Oishii\" (tasty)"], answer: 0 },
+  { q: "What kidnapped the Pajama Parties members before their big show?", choices: ["A witch", "A giant duck monster", "Goblins", "A crystal snake"], answer: 1 },
+  { q: "The Pajama Parties were invited to perform at which festival?", choices: ["The Muchauman Festival", "The Ramen Festival", "The Star Festival", "The Weeding Festival"], answer: 0 },
+  { q: "In the Parallel World arc, what did Hachiware start turning into?", choices: ["A fairy", "A blue chimera", "A star", "A yoroi"], answer: 1 },
+  { q: "What does the witch (Majo) steal chiikawas' bodies for?", choices: ["To give chimeras a new body", "To sell them", "To make potions", "To collect them"], answer: 0 },
+
+  // ===== The movie =====
+  { q: "In the movie, which pepper finally overpowered the Siren?", choices: ["Ghost pepper", "Carolina Reaper", "Habanero", "Jalapeño"], answer: 1 },
+  { q: "In the movie, what did Hitoha and Futaba discover after eating the mermaid?", choices: ["They could breathe underwater", "A battery slot on their bottoms", "They could fly", "They grew fins"], answer: 1 },
+  { q: "In the movie, what did Shimajiro's restaurant serve that gave Chiikawa an idea?", choices: ["Spicy curry rice", "Ramen", "Takoyaki", "Omurice"], answer: 0 },
+
+  // ===== Series basics =====
+  { q: "Who created Chiikawa?", choices: ["Kanahei", "Nagano", "Eiichiro Oda", "San-X"], answer: 1 },
+  { q: "\"Chiikawa\" is short for \"Nanka Chiisakute Kawaii Yatsu.\" What does that mean?", choices: ["Tiny brave warrior", "Something small and cute", "Little friends forever", "A cute creature that cries"], answer: 1 },
+  { q: "Usagi was originally named after a store. What was the name?", choices: ["Donki", "Ikeya", "Nitori", "Daiso"], answer: 0 },
+
+  // ===== More Hachiware =====
+  { q: "Besides photography and music, what does Hachiware enjoy?", choices: ["Reading books", "Fishing", "Painting", "Gardening"], answer: 0 },
+  { q: "What color are the tips of Hachiware's ears and tail?", choices: ["Pink", "Black", "Blue", "Yellow"], answer: 2 },
+  { q: "What tiny detail can sometimes be seen when Hachiware talks?", choices: ["A missing tooth", "Small fangs", "A pink tongue sticking out", "Whiskers moving"], answer: 1 },
+  { q: "What is Hachiware's big weakness when making decisions?", choices: ["They act too fast", "They hesitate and overthink", "They always copy Usagi", "They forget things"], answer: 1 },
+  { q: "Why did Hachiware's voice get deeper over the anime's run?", choices: ["A story about a cold", "Their voice actor is a growing child", "They got older in the story", "A new actor took over"], answer: 1 },
+  { q: "Hachiware thought they bought anko dorayaki, but it was actually...", choices: ["Uguisu (green bean) dorayaki", "Chocolate dorayaki", "Custard dorayaki", "An empty pancake"], answer: 0 },
+  { q: "Hachiware wrote an original song for Chiikawa about...", choices: ["Weeding", "Their morning", "Rakko", "Ramen"], answer: 1 },
+  { q: "After tripping and ruining the sushi, what did Hachiware pour over it to save the meal?", choices: ["Soy sauce", "Boiling water", "Curry", "Milk"], answer: 1 },
+  { q: "Why did Chiikawa choke on Hachiware's homemade sushi?", choices: ["The rice was too hard", "The wasabi was too spicy", "It had a bone", "They ate too fast"], answer: 1 },
+  { q: "Hachiware skipped across the tiles trying not to step on which color?", choices: ["White", "Red", "Black", "Blue"], answer: 2 },
+  { q: "What did Hachiware name the sunfish they rode after running out of safe tiles?", choices: ["The Lucky Sunfish", "Captain Fish", "Sunny", "The Sky Taxi"], answer: 0 },
+  { q: "Why was Hachiware late to see Chiikawa's weeding exam results?", choices: ["They overslept", "They were riding the sunfish", "Rakko needed help", "They got lost in the forest"], answer: 1 },
+  { q: "When Hachiware got stuck in a deep hole, how did Chiikawa rescue them?", choices: ["Called Rakko", "Made a rope out of vines", "Dug a tunnel", "Used a ladder"], answer: 1 },
+  { q: "Besides Hachiware, what else did Chiikawa save from the hole?", choices: ["Their camera", "Their sasumata", "Their guitar", "Their lunch"], answer: 1 },
+  { q: "After first buying their camera, what was Hachiware afraid it might do?", choices: ["Break", "Make things disappear", "Explode", "Steal souls"], answer: 1 },
+  { q: "What did Chiikawa give Hachiware after their weeding license exam?", choices: ["A new sasumata", "A cookie present with a blue ribbon seal", "A photo album", "A plushie"], answer: 1 },
+  { q: "What did Hachiware decorate with their treasured blue ribbon?", choices: ["Their guitar", "A vase", "Their camera strap", "Their cave door"], answer: 1 },
+  { q: "In the Parallel World arc, what sent Hachiware into the other world?", choices: ["Riding a sunfish", "Touching sick Chiikawa's forehead", "Making a wish", "Falling into a hole"], answer: 1 },
+  { q: "Who gave Hachiware a net in the parallel world?", choices: ["Parallel Rakko", "A talking tree", "A shooting star", "Pochette Yoroi-san"], answer: 1 },
+  { q: "Why did Hachiware and Chiikawa fall back into the cult song after escaping the crystal snake?", choices: ["They heard it on the radio", "A word Hachiware said sounded like the song", "Usagi started singing it", "The snake woke up"], answer: 1 },
+
+  // ===== More Chiikawa =====
+  { q: "Chiikawa's species has...", choices: ["Been confirmed as a hamster", "Been confirmed as a mouse", "Never been officially confirmed", "Been confirmed as a bear"], answer: 2 },
+  { q: "What outfit is Chiikawa often seen wearing?", choices: ["A pink onesie", "A blue raincoat", "A squid costume", "A chef hat"], answer: 0 },
+  { q: "When danger comes for their friends, Chiikawa is often...", choices: ["The first to hide", "The first to throw themselves in front of it", "Asleep", "Calling for Rakko"], answer: 1 },
+  { q: "What grew on Chiikawa in episode 262?", choices: ["A flower", "A white fungus", "Extra ears", "A horn"], answer: 1 },
+  { q: "Why did the fungus on Chiikawa grow even bigger?", choices: ["It rained", "Hachiware forgot to cut off the root", "Usagi watered it", "Chiikawa ate too much"], answer: 1 },
+  { q: "Could the fungus that grew on Chiikawa be eaten?", choices: ["Yes, it's edible", "No, it's poisonous", "Only by chimeras", "Only if cooked by Shisa"], answer: 0 },
+  { q: "What happened when Chiikawa opened a giant Ramune bottle?", choices: ["It exploded into bubbles", "The lid flew off and landed on their head like a hat", "Usagi jumped out", "It turned into candy"], answer: 1 },
+  { q: "What went wrong when Chiikawa roasted a giant marshmallow?", choices: ["It melted into the fire", "It caught on fire", "Momonga stole it", "It was too hard to bite"], answer: 1 },
+  { q: "Chiikawa carved a seat inside a giant...", choices: ["Pudding", "Jelly", "Cake", "Pie"], answer: 1 },
+  { q: "How did Chiikawa free Usagi from a giant canelé?", choices: ["Pulled them out", "Ate the canelé", "Used their sasumata", "Called Hachiware"], answer: 1 },
+  { q: "Why did Chiikawa buy a pink clock?", choices: ["To match their pochette", "To fix their sleep schedule", "As a gift for Usagi", "To time the weeding exam"], answer: 1 },
+  { q: "Where did Chiikawa research how to beat the black star?", choices: ["The library", "An internet cafe", "Furuhonya's bookstore", "The job booth"], answer: 1 },
+  { q: "What bit Chiikawa at the start of the Parallel World arc?", choices: ["A snake", "A bee-like creature", "Chiikabu", "Momonga"], answer: 1 },
+  { q: "In the parallel world, what rank was Chiikawa on the top hunter list?", choices: ["No. 1", "No. 2", "No. 10", "Not on the list"], answer: 1 },
+  { q: "Chiikawa and their co-worker at the factory bought snacks from a machine shaped like a...", choices: ["Cat", "Frog", "Rabbit", "Star"], answer: 1 },
+  { q: "What did Chiikawa do to replace Hachiware's stolen ribbon?", choices: ["Made a new ribbon", "Bought the same cookie present again", "Chased the bird", "Asked Pochette Yoroi-san"], answer: 1 },
+  { q: "Which of these sounds does Chiikawa commonly make?", choices: ["\"Waa\"", "\"Ura\"", "\"Yahoo\"", "\"Nya\""], answer: 0 },
+
+  // ===== More Usagi =====
+  { q: "What costume was Usagi wearing when they met Chiikawa enjoying melon soda?", choices: ["A squid outfit", "A frog outfit", "A bear outfit", "A pajama"], answer: 0 },
+  { q: "What was hidden inside the giant pie Usagi swam in?", choices: ["Custard", "Warm stew", "Ice cream", "Jam"], answer: 1 },
+  { q: "After playing in a giant pudding, what did Usagi do?", choices: ["Took a bath", "Rubbed against Chiikawa to get them dirty too", "Ate the whole thing", "Fell asleep in it"], answer: 1 },
+  { q: "What was Usagi eating that was floating in the sky?", choices: ["Cotton candy", "Sour kelp", "Clouds", "Marshmallows"], answer: 1 },
+  { q: "What did Usagi yell while stuck in a giant canelé?", choices: ["\"Help!\"", "\"Yahoo!\"", "\"Ura!\"", "\"Tasty!\""], answer: 1 },
+  { q: "What made Momonga angry at Usagi?", choices: ["Usagi ignored Momonga's demands to leave their Magical Rice Cooker alone", "Usagi ate Momonga's cake", "Usagi called Momonga ugly", "Usagi beat Momonga in a race"], answer: 0 },
+  { q: "Who was first to notice the kidnapped Pajama Parties members and run to save them?", choices: ["Chiikawa", "Hachiware", "Usagi", "Rakko"], answer: 2 },
+  { q: "What is drawn on one end of Usagi's weapon?", choices: ["A star", "A crude drawing of Usagi's face", "A heart", "Chiikawa's face"], answer: 1 },
+  { q: "Why is there a face drawn on Usagi's weapon?", choices: ["It's a good luck charm", "To copy the carved signatures of top-ranked hunters", "Chiikawa drew it", "So nobody steals it"], answer: 1 },
+  { q: "What is unusual about Usagi's eyes?", choices: ["They change color", "They can't blink most of the time", "They glow at night", "They are different sizes"], answer: 1 },
+  { q: "Unlike regular Usagi, Dark Magical Girl Usagi has their eyes...", choices: ["Wide open", "Closed all the time", "Covered by a mask", "Glowing red"], answer: 1 },
+  { q: "Before reaching level 2, what level weeding license did Usagi have?", choices: ["Level 5", "Level 4", "Level 3", "Level 1"], answer: 2 },
+  { q: "Where did Usagi find the wooden doll that turned the trio into fairies?", choices: ["In the forest", "At a thrift shop", "In Hachiware's cave", "At the market"], answer: 1 },
+  { q: "What was on the tip of the magic wand Usagi discovered?", choices: ["A star", "A skull", "A heart", "A crystal"], answer: 1 },
+  { q: "What souvenirs did Usagi bring back from their travels?", choices: ["Pink shiny stones", "Seashells", "Postcards", "Candy"], answer: 0 },
+  { q: "In the movie, what brought the gang to Mermaid Island?", choices: ["A shipwreck", "An invitation letter Usagi received", "A job from Labor Yoroi-san", "A treasure map"], answer: 1 },
+  { q: "Which of these is one of Usagi's signature sounds?", choices: ["\"Ura\"", "\"Mogu\"", "\"Waa\"", "\"Kami\""], answer: 0 },
+
+  // ===== More side characters =====
+  { q: "Kuri-Manju often acts like a...", choices: ["Little kid", "Middle-aged Japanese man", "Grumpy old wizard", "Pop idol"], answer: 1 },
+  { q: "What did Rakko stop the car for while driving Chiikawa and Hachiware?", choices: ["Snacks", "A bathroom break", "To fight a monster", "Gas"], answer: 1 },
+  { q: "Besides a greatsword, what does Rakko always carry?", choices: ["A white cloak", "A backpack", "A red scarf", "A shield"], answer: 0 },
+  { q: "What color are Rakko's ears and limbs?", choices: ["White", "Brown", "Black", "Yellow"], answer: 2 },
+  { q: "What unique fact is true of Shisa in the anime?", choices: ["They're the only chiikawa whose name is revealed", "They're the only one who can fly", "They never speak", "They appear in every episode"], answer: 0 },
+  { q: "Who has pulled all-nighters studying for the drinking license exam?", choices: ["Shisa and Kuri-Manju", "Rakko and Usagi", "Chiikawa and Hachiware", "Momonga and Kani"], answer: 0 },
+  { q: "What topics are on the drinking license exam?", choices: ["Alcohol brands and snacks that go with drinks", "Weeds and bugs", "Cooking ramen", "Math and reading"], answer: 0 },
+  { q: "Do chiikawas need a weeding license to earn money from weeding?", choices: ["Yes, always", "No, but the license lets them earn more", "Only on weekends", "Only for dangerous weeds"], answer: 1 },
+  { q: "What can Momonga do by spreading out their body?", choices: ["Swim", "Fly briefly", "Turn invisible", "Grow bigger"], answer: 1 },
+  { q: "What happens to Momonga's fur depending on the weather?", choices: ["It changes color", "It gets thicker", "It falls out", "It sparkles"], answer: 1 },
+  { q: "During the food drought, what did Momonga try to do?", choices: ["Steal from Rou", "Bite Chiikawa like a chimera would", "Leave town", "Cook for everyone"], answer: 1 },
+  { q: "In what episode was Kani's design finally revealed in the anime?", choices: ["Episode 1", "Episode 100", "Episode 341", "Episode 500"], answer: 2 },
+  { q: "Where can Kani be seen in the Chiikawa Pocket game?", choices: ["As a playable character", "Only on the title screen", "As a shopkeeper", "As a boss"], answer: 1 },
+  { q: "What was Kani before their design was revealed?", choices: ["A faceless background (mob) character", "A chimera", "A yoroi", "A shooting star"], answer: 0 },
+  { q: "How many legs does Dekatsuyo have sticking out from its body?", choices: ["Two", "Four", "Six", "Eight"], answer: 2 },
+  { q: "What color are Dekatsuyo's irises?", choices: ["Blue", "Red", "Green", "Yellow"], answer: 1 },
+  { q: "What did Dekatsuyo do after seeing its chimera face in the pond?", choices: ["Smiled", "Swiped the water away", "Jumped in", "Called for Anoko"], answer: 1 },
+  { q: "What makes Dekatsuyo different from every other chimera so far?", choices: ["It can fly", "It didn't become a chimera through mutation", "It can talk", "It's the biggest"], answer: 1 },
+  { q: "How many horns does Anoko have?", choices: ["None", "One", "Two", "Three"], answer: 1 },
+  { q: "What memory hints that Anoko used to be Chiikawa's co-worker?", choices: ["Wearing pink pajamas and sharing snacks", "Riding a sunfish", "Taking the weeding exam", "Eating ramen at Rou"], answer: 0 },
+  { q: "How does Anoko feel about being a chimera?", choices: ["Desperate to change back", "Content with their new body", "Confused", "Scared"], answer: 1 },
+  { q: "Which chimera is friends with Anoko?", choices: ["Chiikabu", "Dekatsuyo", "The crystal snake", "The Siren"], answer: 1 },
+
+  // ===== More world & arcs =====
+  { q: "How did the trio first find Chiikabu's cave?", choices: ["Following a map", "Pressing a red button while eating apples", "Falling through a hole", "Chasing Momonga"], answer: 1 },
+  { q: "What did Chiikabu do right after causing mischief?", choices: ["Hid", "Danced", "Cried", "Fell asleep"], answer: 1 },
+  { q: "Which of these did Chiikabu do as a prank?", choices: ["Crumpled Chiikawa's homework", "Broke Hachiware's camera", "Stole Usagi's weapon", "Ate Rakko's dessert"], answer: 0 },
+  { q: "How did Chiikabu's chase at the end of its arc stop?", choices: ["Rakko defeated it", "It flew away", "It fell asleep", "Usagi trapped it"], answer: 1 },
+  { q: "What did a monster do to the stars in the three-star restaurant?", choices: ["Stapled them to a wall", "Put them in a jar", "Painted them black", "Made them cook"], answer: 0 },
+  { q: "How did the star answer Hachiware's wish requests?", choices: ["With \"Yes\" and \"No\" in English", "With a wink", "By writing notes", "By glowing different colors"], answer: 0 },
+  { q: "What were the goblins seen reading, hinting at their plans for their prisoners?", choices: ["A map", "A cooking book", "A weeding guide", "A letter"], answer: 1 },
+  { q: "How did Ode help the trio escape the goblin jail?", choices: ["Pried apart the metal bars and fought the goblins", "Tricked the goblins", "Found the key", "Dug the tunnel"], answer: 0 },
+  { q: "What color is Ode's skin?", choices: ["Green", "Blue", "Yellow", "Grey"], answer: 2 },
+  { q: "What did Ode do when the trio first met him?", choices: ["Chased them", "Shared a delicious mushroom", "Asked for directions", "Sang a song"], answer: 1 },
+  { q: "What does the Muchauman mascot do for fans?", choices: ["Hands out free drinks", "Dances and takes pictures with them", "Signs autographs", "Gives rides"], answer: 1 },
+  { q: "What must the chiikawas never find out about Muchauman?", choices: ["Where he lives", "His true identity", "His age", "His favorite food"], answer: 1 },
+  { q: "What were the Yoroi-san advised NOT to do?", choices: ["Eat ramen at work", "Get too close to the chiikawas", "Take off their armor", "Go into the forest"], answer: 1 },
+  { q: "What inspired Chiikawa to dream about becoming a fairy?", choices: ["A picture book", "A butterfly floating by", "A shooting star", "A dream"], answer: 1 },
+  { q: "What happened when the trio dropped the fairy doll from a great height?", choices: ["It shattered", "It didn't break", "It flew away", "It turned them back"], answer: 1 },
+  { q: "In the Crystal Snake arc, what had the hotel turned into?", choices: ["A haunted house", "A chiselling sweatshop", "A ramen shop", "A prison"], answer: 1 },
+  { q: "What happened to Usagi after going outside under the crystal snake's spell?", choices: ["They turned to stone", "They fell asleep", "They turned into a chimera", "They floated away"], answer: 0 },
+  { q: "What did the trio do with the petrified snake and Usagi's pink stones?", choices: ["Sold them", "Buried them", "Put them in a museum", "Threw them in the sea"], answer: 1 },
+  { q: "During the Body Swap arc, how did the trio first react to being swapped?", choices: ["They panicked", "They treated it as a minor inconvenience", "They blamed Momonga", "They ran to the witch"], answer: 1 },
+  { q: "During the food drought, what did Chiikawa notice was unusually long?", choices: ["The line at Rou", "The grass", "The job booth line", "Usagi's nap"], answer: 0 },
+  { q: "Where was the trio having a sleepover when a monster with long arms grabbed Chiikawa?", choices: ["Chiikawa's house", "Hachiware's cave", "Usagi's house", "Rakko's place"], answer: 1 },
+  { q: "Where did Hachiware find the blue ribbon during the Night Fight arc?", choices: ["In a bird's nest", "Under a rock", "In their pocket", "At the market"], answer: 0 },
+  { q: "What did Chiikawa, Hachiware, and Usagi turn into when a witch swapped their bodies in the forest?", choices: ["Calico critters", "Frogs", "Stars", "Chimeras"], answer: 0 },
+  { q: "How did the trio trip up the witch who turned them into calico critters?", choices: ["With a bottle cap", "With a banana peel", "With a rope", "With a sasumata"], answer: 0 },
+  { q: "How long is a typical Chiikawa anime episode?", choices: ["About 1 minute", "About 11 minutes", "About 24 minutes", "About an hour"], answer: 0 },
+  { q: "Which drink do the trio enjoy in an early episode?", choices: ["Yakult", "Coffee", "Green tea", "Cola"], answer: 0 },
+
+  // ===== More movie =====
+  { q: "In the movie, what could the Siren's song do?", choices: ["Make plants grow", "Put people to sleep", "Control the weather", "Summon mermaids"], answer: 0 },
+  { q: "In the movie, how did the Siren first react to the spicy curry rice?", choices: ["She spat it out", "She enjoyed it and was unaffected", "She ran away", "She fell asleep"], answer: 1 },
+  { q: "In the movie, why did Chiikawa keep quiet about Hitoha and Futaba's secret?", choices: ["They were threatened", "They chose to keep it and enjoy the party", "They forgot", "Hachiware told them to"], answer: 1 },
+  { q: "In the movie's post-credits scene, where do Hitoha and Futaba decide to live?", choices: ["A castle", "A cave on a new island", "Chiikawa's house", "Under the sea"], answer: 1 }
 ];

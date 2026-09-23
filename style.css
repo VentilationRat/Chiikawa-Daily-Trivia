@@ -1,5 +1,4 @@
 :root {
-  --sky: #dcecf5;
   --paper: #fffdf9;
   --ink: #4a3b35;
   --pink: #f6c3cf;
@@ -13,7 +12,6 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --sky: #2a3440;
     --paper: #3a3330;
     --ink: #f3e9e2;
     --muted: #c3b5ad;
@@ -29,19 +27,53 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--sky);
+  /* The blue fill matches the image's night sky so the edges blend while it loads. */
+  background: #3c4f9e url("Images/4772993fe2b3bf7bc8ba8f399a077c05.jpg") center bottom / cover no-repeat fixed;
   color: var(--ink);
   font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", system-ui, sans-serif;
   font-weight: 500;
   line-height: 1.55;
 }
 
+/* Pink frame around the edges of the window; fixed so it stays put while scrolling. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  border: 10px solid #f6c3cf;
+  pointer-events: none;
+  z-index: 10;
+}
+
 .page {
   max-width: 34rem;
   margin: 0 auto;
+  min-height: 100vh;
   padding: 2rem 1rem 3rem;
+  /* Translucent pink and white candy stripes behind the centre column. */
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(246, 195, 207, 0.6) 0 2rem,
+    rgba(255, 255, 255, 0.6) 2rem 4rem
+  );
   display: grid;
+  align-content: start;
   gap: 1.25rem;
+}
+
+.masthead { text-align: center; color: #4a3b35; }
+.masthead .muted { color: #6b5a52; }
+
+.masthead .logo {
+  display: block;
+  width: 7.5rem;
+  height: auto;
+  margin: 0 auto 0.75rem;
+  padding: 0.5rem;
+  background: #fffdf9;
+  border: 3px solid #4a3b35;
+  border-radius: 50%;
+  box-shadow: 4px 5px 0 #4a3b35;
 }
 
 .masthead h1 {
@@ -82,10 +114,40 @@ h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
 
 .btn.primary { background: var(--pink); }
 .btn:active { transform: translateY(2px); }
-.btn:focus-visible, .choice:focus-visible, input:focus-visible {
+.btn:focus-visible, .choice:focus-visible {
   outline: 3px dashed var(--ink);
   outline-offset: 3px;
 }
+
+.quiz-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.timer-text {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-bar {
+  height: 0.6rem;
+  margin: 0.4rem 0 0.25rem;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.timer-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--pink);
+}
+
+.timer-low .timer-fill { background: var(--miss); }
 
 .choices { display: grid; gap: 0.6rem; }
 
@@ -106,25 +168,32 @@ h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
 
 .grid { font-size: 2rem; letter-spacing: 0.2em; margin: 0 0 0.25rem; }
 
-.score-form { margin-top: 1.25rem; }
-.score-form label { display: block; font-weight: 700; margin-bottom: 0.35rem; }
-.score-form .btn { margin-top: 0; }
-.row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.percentile { font-size: 1.25rem; font-weight: 900; margin: 0 0 1rem; }
 
-input {
-  flex: 1 1 10rem;
-  font: inherit;
-  color: var(--ink);
-  background: var(--paper);
-  border: var(--line);
-  border-radius: 12px;
-  padding: 0.55rem 0.8rem;
+.chart {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  height: 200px;
+  margin-bottom: 0.75rem;
 }
 
-.board ol { margin: 0; padding-left: 1.5rem; }
-.board li { padding: 0.2rem 0; }
-.board .stat { color: var(--muted); }
+.bar-col { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.bar-value { font-size: 0.8rem; color: var(--muted); }
+.bar-track { flex: 1; width: 100%; display: flex; align-items: flex-end; }
+.bar {
+  width: 100%;
+  min-height: 3px;
+  background: var(--butter);
+  border: var(--line);
+  border-radius: 10px 10px 4px 4px;
+  transition: height 0.5s ease;
+}
+.bar-label { font-weight: 700; margin-top: 0.3rem; }
+.bar-col.mine .bar { background: var(--pink); }
+.bar-col.mine .bar-label::after { content: " (you)"; font-size: 0.75rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .btn:active { transform: none; }
+  .bar { transition: none; }
 }

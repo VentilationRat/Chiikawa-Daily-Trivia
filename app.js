@@ -3,13 +3,14 @@ const SUPABASE_URL = "https://ecsldifiixdsbzckqwqk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_t5bhaKroerm8Lqu37XNjrw_DeJe-mZw";
 
 const QUESTIONS_PER_DAY = 5;
+const SECONDS_PER_QUESTION = 30;
 const START_DATE = Date.UTC(2026, 8, 1); // Puzzle #1 is Sept 1, 2026 (months are 0-based)
 
 // ===== Setup =====
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = (id) => document.getElementById(id);
 
-// The day changes at midnight UTC, so everyone shares the same puzzle and leaderboard.
+// The day changes at midnight UTC, so everyone shares the same puzzle and stats.
 const dayNumber = Math.floor((Date.now() - START_DATE) / 86400000) + 1;
 const storageKey = `chiikawa-trivia-day-${dayNumber}`;
 
@@ -33,7 +34,18 @@ function seededShuffle(list, rng) {
   return a;
 }
 
-const todaysQuestions = seededShuffle(QUESTIONS, mulberry32(dayNumber)).slice(0, QUESTIONS_PER_DAY);
+const dayRng = mulberry32(dayNumber);
+// Pick today's questions, then shuffle each question's choices so the right answer isn't always in the same spot.
+const todaysQuestions = seededShuffle(QUESTIONS, dayRng)
+  .slice(0, QUESTIONS_PER_DAY)
+  .map((item) => {
+    const order = seededShuffle(item.choices.map((_, i) => i), dayRng);
+    return {
+      q: item.q,
+      choices: order.map((i) => item.choices[i]),
+      answer: order.indexOf(item.answer)
+    };
+  });
 
 // ===== Saved progress =====
 function loadSaved() {
@@ -47,11 +59,14 @@ function save(data) {
 let current = 0;
 let results = [];
 let startTime = 0;
+let timerId = null;
+let deadline = 0;
 
 function show(screen) {
   for (const id of ["start-screen", "quiz-screen", "result-screen"]) {
     $(id).hidden = id !== screen;
   }
+  $("stats-panel").hidden = screen !== "result-screen";
 }
 
 function startQuiz() {
@@ -78,14 +93,41 @@ function renderQuestion() {
     box.appendChild(btn);
   });
   box.firstChild.focus();
+  startTimer();
 }
 
+// ===== Question timer =====
+// Counts down from a fixed deadline so a slow or backgrounded tab can't add extra time.
+function startTimer() {
+  stopTimer();
+  deadline = Date.now() + SECONDS_PER_QUESTION * 1000;
+  tick();
+  timerId = setInterval(tick, 200);
+}
+
+function stopTimer() {
+  clearInterval(timerId);
+  timerId = null;
+}
+
+function tick() {
+  const msLeft = Math.max(0, deadline - Date.now());
+  const secondsLeft = Math.ceil(msLeft / 1000);
+  $("timer-text").textContent = `${secondsLeft}s`;
+  $("timer-fill").style.width = `${(msLeft / (SECONDS_PER_QUESTION * 1000)) * 100}%`;
+  $("quiz-screen").classList.toggle("timer-low", secondsLeft <= 10);
+  if (msLeft === 0) pick(null);
+}
+
+// index is null when the timer ran out, which counts as wrong.
 function pick(index) {
+  stopTimer();
   const item = todaysQuestions[current];
   const buttons = [...$("choices").children];
   buttons.forEach((b) => (b.disabled = true));
   buttons[item.answer].classList.add("correct");
-  if (index !== item.answer) buttons[index].classList.add("wrong");
+  if (index === null) $("timer-text").textContent = "Time's up";
+  else if (index !== item.answer) buttons[index].classList.add("wrong");
 
   results.push(index === item.answer);
 
@@ -95,7 +137,7 @@ function pick(index) {
   $("next-btn").focus();
 }
 
-function next() {
+async function next() {
   if (current < todaysQuestions.length - 1) {
     current++;
     renderQuestion();
@@ -103,6 +145,8 @@ function next() {
     const data = { results, timeMs: Date.now() - startTime, submitted: false };
     save(data);
     showResults(data);
+    await submitScore(data);
+    loadStats(data);
   }
 }
 
@@ -115,7 +159,6 @@ function showResults(data) {
   $("result-score").textContent = `You got ${scoreOf(data)} out of ${data.results.length}`;
   $("result-grid").textContent = gridOf(data);
   $("result-time").textContent = `Time: ${(data.timeMs / 1000).toFixed(1)} seconds. Come back tomorrow for new questions.`;
-  $("score-form").hidden = data.submitted;
 }
 
 async function share() {
@@ -129,64 +172,77 @@ async function share() {
   }
 }
 
-// ===== Leaderboard =====
-async function submitScore(event) {
-  event.preventDefault();
-  const data = loadSaved();
-  const name = $("name-input").value.trim();
-  if (!data || !name) return;
-
-  $("submit-status").textContent = "Adding your score...";
-  const { error } = await db.from("scores").insert({
-    day_number: dayNumber,
-    player_name: name,
-    score: scoreOf(data),
-    time_ms: data.timeMs
-  });
-
+// ===== Saving the score (no names, just the number) =====
+async function submitScore(data) {
+  if (data.submitted) return;
+  const { error } = await db.from("scores").insert({ day_number: dayNumber, score: scoreOf(data) });
   if (error) {
-    $("submit-status").textContent =
-      error.code === "23505"
-        ? "Someone already used that name today. Try another one."
-        : `Your score wasn't added: ${error.message}`;
+    console.error("Score not saved:", error.message);
     return;
   }
-
   data.submitted = true;
   save(data);
-  $("score-form").hidden = true;
-  $("submit-status").textContent = "Score added.";
-  loadLeaderboard();
 }
 
-async function loadLeaderboard() {
-  const list = $("leaderboard-list");
-  const { data, error } = await db
-    .from("scores")
-    .select("player_name, score, time_ms")
-    .eq("day_number", dayNumber)
-    .order("score", { ascending: false })
-    .order("time_ms", { ascending: true })
-    .limit(10);
+// ===== Stats: percentile + chart =====
+async function loadStats(data) {
+  const myScore = scoreOf(data);
+  const { data: rows, error } = await db.rpc("score_distribution", { p_day: dayNumber });
 
-  list.innerHTML = "";
   if (error) {
-    list.innerHTML = "<li>The leaderboard couldn't load. Check your Supabase URL and key in app.js.</li>";
+    $("percentile").textContent = "Today's stats couldn't load.";
+    $("stats-note").textContent = "Check your Supabase URL and key in app.js.";
     return;
   }
-  if (data.length === 0) {
-    list.innerHTML = "<li>No scores yet today. Be the first.</li>";
-    return;
+
+  // counts[s] = number of players who scored s today
+  const counts = Array(QUESTIONS_PER_DAY + 1).fill(0);
+  for (const row of rows) counts[row.score] = Number(row.players);
+
+  const total = counts.reduce((a, b) => a + b, 0);
+  const others = data.submitted ? total - 1 : total; // don't compare you to yourself
+  const lower = counts.slice(0, myScore).reduce((a, b) => a + b, 0);
+
+  if (others <= 0) {
+    $("percentile").textContent = "You're the first player today!";
+  } else {
+    const pct = Math.round((lower / others) * 100);
+    $("percentile").textContent = `You did better than ${pct}% of players`;
   }
-  for (const row of data) {
-    const li = document.createElement("li");
-    li.textContent = `${row.player_name} `;
-    const stat = document.createElement("span");
-    stat.className = "stat";
-    stat.textContent = `${row.score}/5 in ${(row.time_ms / 1000).toFixed(1)}s`;
-    li.appendChild(stat);
-    list.appendChild(li);
-  }
+
+  $("stats-note").textContent = `${total} ${total === 1 ? "player has" : "players have"} played today.`;
+  renderChart(counts, myScore, total);
+}
+
+function renderChart(counts, myScore, total) {
+  const chart = $("chart");
+  const max = Math.max(...counts, 1);
+  chart.innerHTML = "";
+  chart.setAttribute("aria-label", counts.map((n, s) => `${n} scored ${s}`).join(", "));
+
+  counts.forEach((n, s) => {
+    const col = document.createElement("div");
+    col.className = "bar-col" + (s === myScore ? " mine" : "");
+
+    const value = document.createElement("span");
+    value.className = "bar-value";
+    value.textContent = total ? `${Math.round((n / total) * 100)}%` : "0%";
+
+    const track = document.createElement("div");
+    track.className = "bar-track";
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    bar.style.height = "0%";
+    track.appendChild(bar);
+
+    const label = document.createElement("span");
+    label.className = "bar-label";
+    label.textContent = s;
+
+    col.append(value, track, label);
+    chart.appendChild(col);
+    requestAnimationFrame(() => (bar.style.height = `${(n / max) * 100}%`));
+  });
 }
 
 // ===== Start =====
@@ -194,8 +250,11 @@ $("day-label").textContent = `Puzzle #${dayNumber}`;
 $("start-btn").addEventListener("click", startQuiz);
 $("next-btn").addEventListener("click", next);
 $("share-btn").addEventListener("click", share);
-$("score-form").addEventListener("submit", submitScore);
 
-const saved = loadSaved();
-if (saved) showResults(saved);
-loadLeaderboard();
+(async () => {
+  const saved = loadSaved();
+  if (!saved) return;
+  showResults(saved);
+  await submitScore(saved); // retries if the first save failed
+  loadStats(saved);
+})();
