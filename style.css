@@ -61,6 +61,11 @@ body::before {
   gap: 1.25rem;
 }
 
+/* On narrow screens, leave room above the logo for the music player. */
+@media (max-width: 48rem) {
+  .page { padding-top: 5rem; }
+}
+
 .masthead { text-align: center; color: #4a3b35; }
 .masthead .muted { color: #6b5a52; }
 
@@ -200,11 +205,11 @@ h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
   .btn:active { transform: none; }
   .bar { transition: none; }
 }
-/* Background music controls, pinned to the bottom-left inside the pink frame. */
+/* Background music controls, pinned to the top-left inside the pink frame. */
 .music-player {
   position: fixed;
   left: 1.25rem;
-  bottom: 1.25rem;
+  top: 1.25rem;
   z-index: 11;
   display: flex;
   align-items: center;
