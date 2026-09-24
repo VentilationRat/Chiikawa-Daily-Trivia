@@ -113,6 +113,9 @@ h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
 }
 
 .btn.primary { background: var(--pink); }
+
+/* Next question sits at the bottom-right of the question box. */
+#next-btn:not([hidden]) { display: block; margin-left: auto; }
 .btn:active { transform: translateY(2px); }
 .btn:focus-visible, .choice:focus-visible {
   outline: 3px dashed var(--ink);
@@ -274,18 +277,12 @@ h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
 @keyframes enter-pulse { 50% { opacity: 0.45; } }
 @media (prefers-reduced-motion: reduce) { .enter-hint { animation: none; } }
 
-/* Crucify button, centred on the point x:600, y:720 of the window. */
+/* Crucify button, sitting next to the volume slider in the music player. */
 .crucify-btn {
-  position: fixed;
-  left: 600px;
-  top: 720px;
-  transform: translate(-50%, -50%);
   margin: 0;
-  z-index: 11;
+  padding: 0.35rem 0.9rem;
   background: var(--miss);
-  box-shadow: 3px 4px 0 var(--ink);
 }
-.crucify-btn:active { transform: translate(-50%, calc(-50% + 2px)); }
 .crucify-btn:disabled { cursor: default; opacity: 0.6; }
 
 /* Full-window overlay: Momonga in the centre, fire gif across the bottom half. */
