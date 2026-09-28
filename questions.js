@@ -100,7 +100,7 @@ const QUESTIONS = [
   // ===== Yoroi-san =====
   { q: "What did the trio gift Pochette Yoroi-san, thinking it was a fashionable accessory?", choices: ["A seashell", "A bear claw", "A crown", "A feather"], answer: 1 },
   { q: "Pochette Yoroi-san saved Chiikawa from what?", choices: ["A terrible self-haircut", "A flood", "A mimic", "Getting lost"], answer: 0 },
-  { q: "Which of these does Pochette Yoroi-san sell?", choices: ["Pajamas, pochettes, and raincoats", "Books", "Takoyaki", "Ramen"], answer: 0 },
+  { q: "Which of these does Pochette Yoroi-san sell?", choices: ["Pochettes", "Books", "Takoyaki", "Ramen"], answer: 0 },
   { q: "Why was Pochette Yoroi-san gently scolded by the head yoroi?", choices: ["For being late", "For getting too close to the chiikawas", "For selling fake items", "For losing his armor"], answer: 1 },
   { q: "What does Labor Yoroi-san use to announce new jobs?", choices: ["A whistle", "A bell", "A drum", "A megaphone"], answer: 1 },
   { q: "What color is Ramen Yoroi-san's armor?", choices: ["Silver", "Red", "Gold", "Black"], answer: 2 },
